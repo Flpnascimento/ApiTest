@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Api.Interface;
+﻿using Api.Interface;
 using Api.Model;
 using Api.Repositorios;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Api.Controllers
 {
@@ -32,8 +28,10 @@ namespace Api.Controllers
             }
             return new ObjectResult(produtos);
         }
+
+        [HttpPost]
         public IActionResult CriarProduto([FromBody]Produtos item)
-        {
+         {
             if (item == null)
             {
                 return BadRequest();
@@ -44,8 +42,8 @@ namespace Api.Controllers
             return CreatedAtRoute("GetProduto", new { id = item.Id }, item);
         }
 
-        [HttpPut]
-        public IActionResult AtualizaProduto(int id [FromBody] Produtos item)
+        [HttpPut("{id}")]
+        public IActionResult AtualizaProduto(int id , [FromBody] Produtos item)
         {
             if (item == null)
             {
@@ -61,7 +59,7 @@ namespace Api.Controllers
             return new NoContentResult();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult RemoverProduto(int id)
         {
             Produtos produtos = repositorio.Get(id);
@@ -72,6 +70,7 @@ namespace Api.Controllers
             }
 
             repositorio.Remove(id);
+
             return new NoContentResult();
         }
 
